@@ -91,9 +91,9 @@ export default function App() {
   return (
     <Document>
       <ChakraProvider theme={theme}>
-        <DefaultLayout>
-          <Outlet />
-        </DefaultLayout>
+        {/* <DefaultLayout> */}
+        <Outlet />
+        {/* </DefaultLayout> */}
       </ChakraProvider>
     </Document>
   );
