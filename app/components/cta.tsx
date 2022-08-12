@@ -1,136 +1,72 @@
-import {
-  Container,
-  Stack,
-  Flex,
-  Box,
-  Heading,
-  Text,
-  Button,
-  Image,
-  Icon,
-  IconButton,
-  createIcon,
-  IconProps,
-  useColorModeValue,
-} from "@chakra-ui/react";
-
+import { Transition } from "@headlessui/react";
+import { useState } from "react";
 import avatar from "~/assets/images/avatar.svg";
-
 export default function Cta() {
+  const [isShowing, setIsShowing] = useState(false);
+  const [isShowingCall, setIsShowingCall] = useState(false);
   return (
-    <Container maxW={"7xl"}>
-      <Stack
-        align={"center"}
-        spacing={{ base: 8, md: 10 }}
-        py={{ base: 0, md: 10 }}
-        direction={{ base: "column", md: "row" }}
-      >
-        <Stack
-          w="60%"
-          order={{ base: 1, md: 0 }}
-          flex={1}
-          spacing={{ base: 5, md: 10 }}
-          mt={{ base: 8, md: 0 }}
-        >
-          <Heading
-            lineHeight={1.1}
-            fontWeight={600}
-            fontSize={{ base: "3xl", sm: "4xl", lg: "6xl" }}
-          >
-            <Text
-              as={"span"}
-              position={"relative"}
-              _after={{
-                content: "''",
-                width: "full",
-                height: "30%",
-                position: "absolute",
-                bottom: 1,
-                left: 0,
-                bg: "red.400",
-                zIndex: -1,
-              }}
+    <div
+      onMouseEnter={() => setIsShowing(true)}
+      onMouseLeave={() => setIsShowing(false)}
+      className="bg-white dark:bg-gray-800 overflow-hidden relative flex md:flex-row flex-col"
+    >
+      <div className="xs:w-full sm:w-full text-start  w-full md:w-1/2 lg:w-2/3 py-10 px-4 sm:px-6 lg:py-10 lg:px-8 z-20">
+        <h2 className="text-3xl font-extrabold text-black dark:text-white sm:text-4xl">
+          <span className="block">Hi 👋, I'm Adha Bakhtiar</span>
+        </h2>
+        <p className="text-lg text-violet-600 dark:text-violet-300">
+          A passionate frontend & backend developer from Indonesia 🇮🇩
+        </p>
+        <p className="text-lg mt-4 text-gray-800 dark:text-gray-200">
+          Bakhtiar currently working on PT. Doran Sukses Indonesia as frontend &
+          backend enginer. He has several skills including ReactJS, VueJS,
+          AngularJS, React Native, Flutter, NextJS, NuxtJS, NestJs, Laravel
+        </p>
+        <div className="lg:mt-0 lg:flex-shrink-0">
+          <div className="mt-12 inline-flex rounded-md shadow">
+            <button
+              onMouseEnter={() => setIsShowingCall(true)}
+              onMouseLeave={() => setIsShowingCall(false)}
+              type="button"
+              className="py-4 px-6  bg-indigo-600 hover:bg-indigo-700 focus:ring-indigo-500 focus:ring-offset-indigo-200 text-white w-full transition ease-in duration-200 text-center text-base font-semibold shadow-md focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-lg "
             >
-              Hi there,
-            </Text>
-            <br />
-            <Text as={"span"} color={"red.400"}>
-              i'm Bakhtiar
-            </Text>
-          </Heading>
-          <Text color={"gray.100"}>
-            A passionate frontend & backend developer from Indonesia Indonesian
-            🇮🇩. I’m currently working on PT. Doran Sukses Indonesia as Web
-            Developer. Currently learning ReactJS, VueJS, AngularJS, React
-            Native, Flutter, NextJS, NuxtJS, NestJs, Laravel. How to reach me?
-            adhabakhtiar@gmail.com
-          </Text>
-          <Stack
-            spacing={{ base: 4, sm: 6 }}
-            direction={{ base: "column", sm: "row" }}
-          >
-            <Button
-              rounded={"full"}
-              size={"lg"}
-              fontWeight={"normal"}
-              px={6}
-              colorScheme={"red"}
-              bg={"red.400"}
-              color={"gray.100"}
-              _hover={{ bg: "red.500" }}
-            >
-              Read More About Me
-            </Button>
-            <Button rounded={"full"} size={"lg"} fontWeight={"normal"} px={6}>
-              Browse My Github Repository
-            </Button>
-          </Stack>
-        </Stack>
-        <Flex
-          order={{ base: 0, md: 1 }}
-          mt={{ base: "0 !important", md: 8 }}
-          flex={1}
-          justify={"center"}
-          align={"center"}
-          position={"relative"}
-          w={"full"}
+              More About Him...
+            </button>
+          </div>
+        </div>
+      </div>
+      <div className="xs:w-full sm:w-full md:w-1/2 min-h-full lg:w-2/3 flex items-center flex-col relative">
+        <Transition
+          show={isShowingCall}
+          appear={true}
+          unmount={false}
+          enter="transition-opacity duration-75"
+          enterFrom="opacity-0"
+          enterTo="opacity-100"
+          leave="transition-opacity duration-150"
+          leaveFrom="opacity-100"
+          leaveTo="opacity-0"
+          className="md:absolute relative z-10 top-2 right-2 !block"
         >
-          {/* <Blob
-            w={"100%"}
-            h={"100%"}
-            position={"absolute"}
-            top="5%"
-            zIndex={-1}
-            color={useColorModeValue("red.50", "red.400")}
-          /> */}
-          <Box
-            position={"relative"}
-            height={"300px"}
-            rounded={"2xl"}
-            width={"full"}
-            overflow={"hidden"}
-          >
-            <Image w={"full"} h={"full"} fit={"contain"} src={avatar}></Image>
-          </Box>
-        </Flex>
-      </Stack>
-    </Container>
+          <div className="rounded-full bg-white w-64 flex items-center border-dotted border-2 border-violet-500 ">
+            <p className="w-full px-4 py-6 text-center">Yeah go ahead!!!</p>
+          </div>
+        </Transition>
+
+        <Transition
+          show={isShowing}
+          unmount={false}
+          enter="transition-bottom duration-75"
+          enterFrom="-bottom-10"
+          enterTo="bottom-0"
+          leave="transition-bottom duration-150"
+          leaveFrom="bottom-0"
+          leaveTo="-bottom-10"
+          className="right-0 -bottom-10 !block relative md:absolute "
+        >
+          <img src={avatar} className="h-full w-60" />
+        </Transition>
+      </div>
+    </div>
   );
 }
-
-export const Blob = (props: IconProps) => {
-  return (
-    <Icon
-      width={"100%"}
-      viewBox="0 0 480 480"
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      {...props}
-    >
-      <path
-        fill="#474bff"
-        d="M442,271Q431,302,432.5,341.5Q434,381,400.5,398Q367,415,340,439.5Q313,464,276.5,463Q240,462,203.5,463Q167,464,140.5,439Q114,414,89.5,390.5Q65,367,40,340Q15,313,13.5,276.5Q12,240,24,207Q36,174,58,149Q80,124,101.5,101Q123,78,145,46.5Q167,15,203.5,30.5Q240,46,276.5,30.5Q313,15,337.5,44Q362,73,397.5,86.5Q433,100,429.5,140Q426,180,439.5,210Q453,240,442,271Z"
-      />
-    </Icon>
-  );
-};
