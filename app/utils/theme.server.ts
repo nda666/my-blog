@@ -8,7 +8,7 @@ if (!sessionSecret) {
 const themeStorage = createCookieSessionStorage({
   cookie: {
     name: "theme",
-    secure: true,
+    secure: false,
     secrets: [sessionSecret],
     sameSite: "lax",
     path: "/",
@@ -19,7 +19,7 @@ const themeStorage = createCookieSessionStorage({
 async function getThemeSession(request: Request) {
   const session = await themeStorage.getSession(request.headers.get("Cookie"));
   return {
-    getTheme: () => {
+    getTheme: (): "light" | "dark" | null => {
       const themeValue = session.get("theme");
       return themeValue;
     },

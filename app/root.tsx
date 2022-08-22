@@ -1,4 +1,5 @@
-import type {
+import {
+  json,
   LinksFunction,
   LoaderArgs,
   LoaderFunction,
@@ -14,7 +15,7 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import ThemeProvider from "./contexts/ThemeContext";
-import DefaultLayout from "./layouts/defaultLayout";
+import DefaultLayout from "./layouts/DefaultLayout";
 
 import tailwindStylesheetUrl from "./styles/app.css";
 import { getThemeSession } from "./utils/theme.server";
@@ -37,14 +38,33 @@ export const links: LinksFunction = () => {
 
 export const loader: LoaderFunction = async ({ request }) => {
   const theme = await getThemeSession(request);
+  const userTheme = await getThemeSession(request);
 
-  return {
-    theme: theme.getTheme(),
-    appName: process.env.APP_NAME,
-    env: {
-      APP_NAME: process.env.APP_NAME,
+  if (!userTheme.getTheme()) {
+    const headerRequestTheme = request.headers.get(
+      "Sec-CH-Prefers-Color-Scheme"
+    );
+    userTheme.setTheme(
+      headerRequestTheme == "light" || headerRequestTheme == "dark"
+        ? headerRequestTheme
+        : "light"
+    );
+  }
+
+  return json(
+    {
+      theme: theme.getTheme(),
+      appName: process.env.APP_NAME,
+      env: {
+        APP_NAME: process.env.APP_NAME,
+      },
     },
-  };
+    {
+      headers: {
+        "Set-Cookie": await userTheme.commit(),
+      },
+    }
+  );
 };
 
 export const meta: MetaFunction = () => ({
@@ -62,7 +82,7 @@ export default function App() {
         <Links />
       </head>
       <body className="h-full">
-        <ThemeProvider initialTheme={theme}>
+        <ThemeProvider>
           <DefaultLayout env={env}>
             <Outlet />
           </DefaultLayout>

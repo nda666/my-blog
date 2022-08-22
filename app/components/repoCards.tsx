@@ -1,6 +1,7 @@
 import { GoGitBranch, GoStar } from "react-icons/go";
 import type { PropsWithChildren } from "react";
 import type { GithubRepositories } from "~/types/githubRepositories";
+import { Link } from "@remix-run/react";
 
 interface RepoCardsInterface {
   repositories: GithubRepositories[];
@@ -31,7 +32,12 @@ export function RepoCard({
 }: PropsWithChildren<RepoCardInterface>) {
   const left = (index + 1) % 2 == 0;
   return (
-    <div className="group card card-compact bg-base-100 shadow-xl">
+    <a
+      href={repository.html_url}
+      target="_blank"
+      className="group card card-compact bg-base-100 shadow-xl"
+      rel="noreferrer"
+    >
       <figure className="flex flex-col h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 ">
         <div
           className={`transition ease-in-out  align-middle text-slate-100 capitalize text-5xl font-semibold w-full text-center group-hover:-translate-y-1 group-hover:scale-150 duration-300 ${
@@ -59,6 +65,6 @@ export function RepoCard({
           </div>
         </div>
       </div>
-    </div>
+    </a>
   );
 }

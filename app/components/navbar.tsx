@@ -13,13 +13,12 @@ export default function Navbar({
   children,
 }: PropsWithChildren<NavbarProps>) {
   const { isDark, toggleTheme } = useTheme();
-  const __ = typeof window !== "undefined" && window.env;
-  console.log(__);
+
   return (
-    <div className="navbar bg-base-100 dark:bg-gray-900 dark:text-slate-100">
+    <div className="fixed z-10 top-0 navbar bg-base-100 dark:bg-gray-900 dark:text-slate-100">
       <div className="navbar-start justify-between">
-        <Drawer />
-        <div>
+        <Drawer></Drawer>
+        <div className="hidden md:block">
           <Link
             to={"/"}
             className="btn btn-ghost normal-case hover:dark:bg-slate-600"
@@ -36,8 +35,8 @@ export default function Navbar({
           {title || "APP_TITLE"}
         </a>
       </div>
-      <div className="navbar-end  justify-between">
-        <div>
+      <div className="navbar-end justify-end md:justify-between">
+        <div className="hidden md:block">
           <a className="btn btn-ghost normal-case hover:dark:bg-slate-600 ">
             Blog
           </a>

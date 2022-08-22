@@ -2,13 +2,15 @@
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { createPortal } from "react-dom";
+import { MdClose } from "react-icons/md";
 
-export default function Drawer() {
+export default function Drawer({}) {
   const [open, setOpen] = useState(false);
 
   return (
     <>
       <button
+        id="menu-button"
         tabIndex={0}
         onClick={() => setOpen(true)}
         className="btn btn-ghost btn-circle"
@@ -39,18 +41,6 @@ const DrawerContainer = ({ open, setOpen }) => {
   return (
     <Transition.Root show={open} as={Fragment}>
       <Dialog as="div" className="relative z-50" onClose={setOpen}>
-        <Transition.Child
-          as={Fragment}
-          enter="ease-in-out duration-500"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in-out duration-500"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-        </Transition.Child>
-
         <div className="fixed inset-0 overflow-hidden">
           <div className="absolute inset-0 overflow-hidden">
             <div className="pointer-events-none fixed inset-y-0 left-0 flex max-w-full">
@@ -64,39 +54,45 @@ const DrawerContainer = ({ open, setOpen }) => {
                 leaveTo="-translate-x-full"
               >
                 <Dialog.Panel className="pointer-events-auto relative w-screen max-w-md">
-                  <Transition.Child
-                    as={Fragment}
-                    enter="ease-in-out duration-500"
-                    enterFrom="opacity-0"
-                    enterTo="opacity-100"
-                    leave="ease-in-out duration-500"
-                    leaveFrom="opacity-100"
-                    leaveTo="opacity-0"
-                  >
-                    <div className="absolute top-0 left-0 -ml-8 flex pt-4 pr-2 sm:-ml-10 sm:pr-4">
-                      <button
-                        type="button"
-                        className="rounded-md text-gray-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-white"
-                        onClick={() => setOpen(false)}
+                  <div className="flex h-full flex-col bg-white text-gray-900 dark:bg-slate-800 dark:text-white shadow-xl overflow-y-auto">
+                    <div className="px-4 py-2 w-full flex flex-row justify-between items-center">
+                      <Dialog.Title className="text-lg font-medium">
+                        Menu
+                      </Dialog.Title>
+                      <Transition.Child
+                        as={Fragment}
+                        enter="ease-in-out duration-500"
+                        enterFrom="opacity-0"
+                        enterTo="opacity-100"
+                        leave="ease-in-out duration-500"
+                        leaveFrom="opacity-100"
+                        leaveTo="opacity-0"
                       >
-                        <span className="sr-only">Close panel</span>
-                        {/* <XIcon className="h-6 w-6" aria-hidden="true" /> */}
-                      </button>
+                        <button
+                          type="button"
+                          className="btn btn-ghost btn-circle btn-lg"
+                          onClick={() => setOpen(false)}
+                        >
+                          <span className="sr-only">Close panel</span>
+                          <MdClose />
+                        </button>
+                      </Transition.Child>
                     </div>
-                  </Transition.Child>
-                  <div className="flex h-full flex-col overflow-y-auto bg-white py-6 shadow-xl">
-                    <div className="px-4 sm:px-6">
-                      <Dialog.Title className="text-lg font-medium text-gray-900"></Dialog.Title>
-                    </div>
-                    <div className="relative mt-6 flex-1 px-4 sm:px-6">
-                      {/* Replace with your content */}
-                      <div className="absolute inset-0 px-4 sm:px-6">
-                        <div
-                          className="h-full border-2 border-dashed border-gray-200"
-                          aria-hidden="true"
-                        />
-                      </div>
-                      {/* /End replace */}
+                    <div className="relative flex-1 px-4 overflow-y-auto">
+                      <ul className="menu w-full p-0 rounded-box">
+                        <li>
+                          <a>Home</a>
+                        </li>
+                        <li>
+                          <a>Repository</a>
+                        </li>
+                        <li>
+                          <a>Blog</a>
+                        </li>
+                        <li>
+                          <a>Profile</a>
+                        </li>
+                      </ul>
                     </div>
                   </div>
                 </Dialog.Panel>

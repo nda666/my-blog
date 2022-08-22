@@ -10,7 +10,7 @@ export default function Cta() {
       onMouseLeave={() => setIsShowing(false)}
       className="bg-white dark:bg-gray-800 overflow-hidden relative flex md:flex-row flex-col"
     >
-      <div className="xs:w-full sm:w-full text-start  w-full md:w-1/2 lg:w-2/3 py-10 px-4 sm:px-6 lg:py-10 lg:px-8 z-20">
+      <div className="xs:w-full sm:w-full text-start  w-full md:w-1/2 lg:w-2/3 py-10 px-4 sm:px-6 lg:py-10 lg:px-8 z-0">
         <h2 className="text-3xl font-extrabold text-black dark:text-white sm:text-4xl">
           <span className="block">Hi 👋, I'm Adha Bakhtiar</span>
         </h2>

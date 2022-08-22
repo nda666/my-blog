@@ -3,7 +3,6 @@ import { useLoaderData } from "@remix-run/react";
 import GetGithubRepos from "~/api/getGithubRepos";
 import Cta from "~/components/cta";
 import RepoCards from "~/components/repoCards";
-import DefaultLayout from "~/layouts/defaultLayout";
 import type { GithubRepositories } from "~/types/githubRepositories";
 
 export const loader = async () => {
@@ -20,7 +19,6 @@ export default function Index() {
   return (
     <>
       <Cta />
-
       <RepoCards repositories={repositories!} />
     </>
   );

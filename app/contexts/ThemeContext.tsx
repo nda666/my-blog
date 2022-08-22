@@ -4,9 +4,11 @@ import { createContext, useEffect, useState } from "react";
 
 export const ThemeContext = createContext({} as ReturnType<typeof useValue>);
 
-const useValue = (initialTheme) => {
-  const [theme, setTheme] = useState<"dark" | "light">(initialTheme);
-
+const useValue = (initialTheme?: "dark" | "light") => {
+  const [theme, setTheme] = useState<"dark" | "light">();
+  const [submitState, setSubmitState] = useState<
+    "idle" | "submitting" | "loading"
+  >("idle");
   const persistTheme = useFetcher();
   const persistThemeRef = useRef(persistTheme);
 
@@ -31,14 +33,14 @@ const useValue = (initialTheme) => {
     );
   }, [theme]);
 
-  // useEffect(() => {
-  //   console.log("theme", theme);
-  //   rawSetTheme(theme);
-  // }, [theme]);
+  useEffect(() => {
+    setSubmitState(persistTheme.state);
+  }, [persistTheme?.state]);
 
   return {
     theme,
     setTheme,
+    submitState,
   };
 };
 
@@ -57,10 +59,9 @@ export default function ThemeProvider({
 }
 
 export const useTheme = () => {
-  const { theme, setTheme } = useContext(ThemeContext);
+  const { theme, setTheme, submitState } = useContext(ThemeContext);
 
   const isDark = () => {
-    console.log("ctx", theme);
     return theme === "dark";
   };
 
@@ -71,5 +72,6 @@ export const useTheme = () => {
   return {
     isDark,
     toggleTheme,
+    submitState,
   };
 };
