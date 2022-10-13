@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import Breadcrumb from "~/components/BreadCrumb";
 import Navbar from "~/components/navbar";
 import OverlayLoading from "~/components/OverlayLoading";
 import { useTheme } from "~/contexts/ThemeContext";
@@ -18,7 +19,11 @@ export default function DefaultLayout({
       )}
       <div className="bg-white dark:bg-gray-800 relative">
         <Navbar title={env.APP_NAME} />
-        <div className="pt-20">{children}</div>
+
+        <div className="pt-20">
+          <Breadcrumb />
+          {children}
+        </div>
       </div>
     </>
   );

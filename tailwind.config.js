@@ -3,7 +3,31 @@ module.exports = {
   darkMode: "class",
   content: ["./app/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      typography: (theme) => ({
+        DEFAULT: {
+          css: [
+            {
+              pre: {
+                padding: 0,
+              },
+              "pre > div": {
+                margin: "0 !important",
+              },
+              "ul > li.task-list-item::before": {
+                content: "none",
+              },
+              "ul > li.task-list-item input": {
+                margin: 0,
+              },
+              img: {
+                display: "unset",
+              },
+            },
+          ],
+        },
+      }),
+    },
   },
   daisyui: {
     themes: [
@@ -22,5 +46,5 @@ module.exports = {
       },
     ],
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"), require("@tailwindcss/typography")],
 };

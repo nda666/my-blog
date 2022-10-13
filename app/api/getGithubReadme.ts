@@ -1,23 +1,22 @@
-import type { GithubRepositories } from "~/types/githubRepositories";
+import { GithubReadme } from "~/types/GithubReadme";
 import cache from "~/utils/cache";
 
-interface GetGithubReposResponse {
+interface GetGithubReadmeResponse {
   error: any;
-  data: GithubRepositories | undefined;
+  data: GithubReadme | undefined;
 }
 
-export default function getGithubRepoDetail(repoName: string) {
-  return new Promise<GetGithubReposResponse>((resolve, reject) => {
-    const cacheExist = cache.get<GetGithubReposResponse>(
-      `repositories.${repoName}`
+export default function getGithubReadme(repoName: string) {
+  return new Promise<GetGithubReadmeResponse>((resolve, reject) => {
+    const cacheExist = cache.get<GetGithubReadmeResponse>(
+      `repositories.${repoName}.readme`
     );
     if (cacheExist) {
       resolve(cacheExist);
-      console.log("GetGithubReposResponse: from cache");
       return true;
     }
     fetch(
-      `https://api.github.com/repos/${process.env.GITHUB_USERNAME}/${repoName}`,
+      `https://api.github.com/repos/${process.env.GITHUB_USERNAME}/${repoName}/readme`,
       {
         headers: {
           authorization: `token ${process.env.GITHUB_TOKEN}`,

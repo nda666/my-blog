@@ -3,7 +3,7 @@ interface OverlayLoadingProps {
 }
 export default function OverlayLoading({ message }: OverlayLoadingProps) {
   return (
-    <div className="fixed dark:bg-white bg-black opacity-60 z-50 h-full w-full flex items-center justify-center">
+    <div className="fixed dark:bg-white bg-black opacity-70 z-50 h-full w-full flex items-center justify-center">
       <div className="flex items-center">
         <svg
           className="inline mr-2 w-10 h-10 text-gray-200 animate-spin dark:text-gray-600 fill-violet-600"
@@ -20,7 +20,7 @@ export default function OverlayLoading({ message }: OverlayLoadingProps) {
             fill="currentFill"
           />
         </svg>
-        <span className="text-2xl ml-4">{message || "Loading"}</span>
+        {/* <span className="text-2xl ml-4">{message || "Loading"}</span> */}
         <span className="sr-only">Loading...</span>
       </div>
     </div>

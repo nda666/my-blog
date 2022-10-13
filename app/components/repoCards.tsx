@@ -32,11 +32,9 @@ export function RepoCard({
 }: PropsWithChildren<RepoCardInterface>) {
   const left = (index + 1) % 2 == 0;
   return (
-    <a
-      href={repository.html_url}
-      target="_blank"
+    <Link
+      to={`/repository/${repository.name}`}
       className="group card card-compact bg-base-100 shadow-xl"
-      rel="noreferrer"
     >
       <figure className="flex flex-col h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 ">
         <div
@@ -65,6 +63,6 @@ export function RepoCard({
           </div>
         </div>
       </div>
-    </a>
+    </Link>
   );
 }

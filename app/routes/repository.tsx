@@ -9,34 +9,17 @@ import graphqlClient from "~/utils/graphqlClient";
 
 export const loader = async () => {
   const { data, error } = await GetGithubRepos();
-  const blog = await graphqlClient.query({
-    query: gql`
-      query {
-        blogCollection {
-          items {
-            title
-            slug
-            thumbnail {
-              url
-            }
-          }
-        }
-      }
-    `,
-  });
-  return json({ repositories: data?.slice(0, 6), error: error, blog });
+
+  return json({ repositories: data, error: error });
 };
-interface IndexData {
+interface RepoPageData {
   repositories: GithubRepositories[];
   error: any;
-  blog: any;
 }
 export default function Index() {
-  const { repositories, error, blog } = useLoaderData<IndexData>();
-  console.log(blog);
+  const { repositories, error } = useLoaderData<RepoPageData>();
   return (
     <>
-      <Cta />
       <RepoCards repositories={repositories!} />
     </>
   );

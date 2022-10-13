@@ -25,9 +25,12 @@ export default function Navbar({
           >
             Home
           </Link>
-          <a className="btn btn-ghost normal-case hover:dark:bg-slate-600">
+          <Link
+            to={"/repository"}
+            className="btn btn-ghost normal-case hover:dark:bg-slate-600"
+          >
             Repository
-          </a>
+          </Link>
         </div>
       </div>
       <div className="navbar-center">
