@@ -6,6 +6,7 @@ import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { oneDark } from "react-syntax-highlighter/dist/cjs/styles/prism";
+import rehypeRaw from "rehype-raw";
 import type { GithubReadme } from "~/types/GithubReadme";
 import remarkGemoji from "remark-gemoji";
 
@@ -56,6 +57,7 @@ export default function Repository() {
             },
           }}
           remarkPlugins={[gfm, remarkGemoji]}
+          rehypePlugins={[rehypeRaw]}
         >
           {loader.readme.content}
         </ReactMarkdown>
