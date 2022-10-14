@@ -67,9 +67,9 @@ export const loader: LoaderFunction = async ({ request }) => {
   );
 };
 
-export const meta: MetaFunction = () => ({
+export const meta: MetaFunction = ({ data, params }) => ({
   charset: "utf-8",
-  title: process.env.APP_NAME,
+  title: data?.env?.APP_NAME || "",
   viewport: "width=device-width,initial-scale=1",
 });
 
