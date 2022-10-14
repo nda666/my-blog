@@ -34,5 +34,6 @@ module.exports = {
     /^zwitch.*/,
     /^html-void-elements.*/,
     /^gemoji.*/,
+    /^property-information.*/,
   ],
 };
