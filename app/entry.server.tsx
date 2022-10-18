@@ -13,6 +13,7 @@ export default function handleRequest(
     <RemixServer context={remixContext} url={request.url} />
   );
 
+  responseHeaders.set("Cache-Control", "max-age=300, s-maxage=3600");
   responseHeaders.set("Content-Type", "text/html");
 
   return new Response(`<!DOCTYPE html>${html}`, {

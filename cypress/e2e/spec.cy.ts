@@ -1,7 +1,6 @@
 describe("test", () => {
   it("should visit /", () => {
     cy.visit("/");
-    cy.contains("Bakhtiar");
 
     cy.contains("Home");
     cy.contains("Repository");

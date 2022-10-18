@@ -56,7 +56,7 @@ export default function Repository() {
               );
             },
           }}
-          remarkPlugins={[gfm, remarkGemoji]}
+          remarkPlugins={[remarkGemoji, gfm]}
           rehypePlugins={[rehypeRaw]}
         >
           {loader.readme.content}
