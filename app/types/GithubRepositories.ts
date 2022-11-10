@@ -27,6 +27,12 @@ export interface License {
   node_id: string;
 }
 
+export interface GithubSearchRepositories {
+  total_count: number;
+  incomplete_results: boolean;
+  items: GithubRepositories[];
+}
+
 export interface GithubRepositories {
   id: number;
   node_id: string;

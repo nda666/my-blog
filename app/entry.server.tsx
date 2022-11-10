@@ -2,6 +2,10 @@
 import { renderToString } from "react-dom/server";
 import { RemixServer } from "@remix-run/react";
 import type { EntryContext } from "@remix-run/node"; // Depends on the runtime you choose
+import { SentryInit } from "./utils/sentry";
+import config from "./config";
+
+SentryInit(config.sentryDsn);
 
 export default function handleRequest(
   request: Request,

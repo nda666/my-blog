@@ -6,7 +6,7 @@ declare global {
   var __cache: LRU<unknown, unknown>;
 }
 const cacheOption: LRU.Options<unknown, unknown> = {
-  ttl: 1000 * 60 * 120,
+  ttl: 1000 * 60,
   max: 200,
 };
 if (process.env.NODE_ENV === "production") {

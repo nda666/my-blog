@@ -1,4 +1,4 @@
-import type { GithubRepositories } from "~/types/githubRepositories";
+import type { GithubRepositories } from "~/types/GithubRepositories";
 import cache from "~/utils/cache";
 
 interface GetGithubReposResponse {

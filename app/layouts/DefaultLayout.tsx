@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 import Breadcrumb from "~/components/BreadCrumb";
+import Footer from "~/components/footer";
 import Navbar from "~/components/navbar";
 import OverlayLoading from "~/components/OverlayLoading";
 import { useTheme } from "~/contexts/ThemeContext";
@@ -24,6 +25,8 @@ export default function DefaultLayout({
           <Breadcrumb />
           {children}
         </div>
+
+        <Footer env={env} />
       </div>
     </>
   );

@@ -1,15 +1,17 @@
 import { GoGitBranch, GoStar } from "react-icons/go";
 import type { PropsWithChildren } from "react";
-import type { GithubRepositories } from "~/types/githubRepositories";
+import type { GithubRepositories } from "~/types/GithubRepositories";
 import { Link } from "@remix-run/react";
 
 interface RepoCardsInterface {
   repositories: GithubRepositories[];
 }
+
 interface RepoCardInterface {
   repository: GithubRepositories;
   index: number;
 }
+
 export default function RepoCards(
   props: PropsWithChildren<RepoCardsInterface>
 ) {
@@ -17,7 +19,7 @@ export default function RepoCards(
     <>
       <div className="w-full px-10">
         <div className="lg:columns-3 md:columns-2 sm:columns-1 xs:columns-1 gap-8 space-y-8">
-          {props.repositories.map((repository, index) => (
+          {props.repositories?.map((repository, index) => (
             <RepoCard repository={repository} key={index} index={index} />
           ))}
         </div>

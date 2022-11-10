@@ -14,10 +14,13 @@ import {
   ScrollRestoration,
   useLoaderData,
 } from "@remix-run/react";
+import { withSentry } from "@sentry/remix";
+import config from "./config";
 import ThemeProvider from "./contexts/ThemeContext";
 import DefaultLayout from "./layouts/DefaultLayout";
 
 import tailwindStylesheetUrl from "./styles/app.css";
+import { SentryInit } from "./utils/sentry";
 import { getThemeSession } from "./utils/theme.server";
 
 export const links: LinksFunction = () => {
@@ -57,6 +60,12 @@ export const loader: LoaderFunction = async ({ request }) => {
       appName: process.env.APP_NAME,
       env: {
         APP_NAME: process.env.APP_NAME,
+        SENTRY_DSN: process.env.SENTRY_DSN,
+        GITHUB_USERNAME: process.env.GITHUB_USERNAME,
+        SOCIAL_EMAIL: process.env.SOCIAL_EMAIL,
+        SOCIAL_FACEBOOK_URL: process.env.SOCIAL_FACEBOOK_URL,
+        SOCIAL_INSTAGRAM_USERNAME: process.env.SOCIAL_INSTAGRAM_USERNAME,
+        SOCIAL_TWITTER_USERNAME: process.env.SOCIAL_TWITTER_USERNAME,
       },
     },
     {
@@ -73,8 +82,9 @@ export const meta: MetaFunction = ({ data, params }) => ({
   viewport: "width=device-width,initial-scale=1",
 });
 
-export default function App() {
+function App() {
   const { theme, appName, env } = useLoaderData();
+  SentryInit(env.SENTRY_DSN);
   return (
     <html lang="en" className={`h-full ${theme || ""}`}>
       <head>
@@ -100,3 +110,4 @@ export default function App() {
     </html>
   );
 }
+export default withSentry(App);
