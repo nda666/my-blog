@@ -21,12 +21,11 @@ export default function GetGithubRepos(page = 1, perPage = 15) {
       page: page.toString(),
       per_page: perPage.toString(),
     });
-    console.info(`https://api.github.com/search/repositories?${query}`);
+
     const cacheKey = `repositories.${query}`;
     const cacheExist = cache.get<GetGithubReposResponse>(cacheKey);
     if (cacheExist) {
       resolve(cacheExist);
-      console.info("GetGithubReposResponse: from cache");
       return true;
     }
 

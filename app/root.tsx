@@ -15,9 +15,10 @@ import {
   useLoaderData,
 } from "@remix-run/react";
 import { withSentry } from "@sentry/remix";
+import ProgressBar from "./components/progressBar";
 import config from "./config";
 import ThemeProvider from "./contexts/ThemeContext";
-import DefaultLayout from "./layouts/DefaultLayout";
+import DefaultLayout from "./layouts/defaultLayout";
 
 import tailwindStylesheetUrl from "./styles/app.css";
 import { SentryInit } from "./utils/sentry";
@@ -86,12 +87,18 @@ function App() {
   const { theme, appName, env } = useLoaderData();
   SentryInit(env.SENTRY_DSN);
   return (
-    <html lang="en" className={`h-full ${theme || ""}`}>
+    <html lang="en" className={`h-full ${theme || "dark"}`}>
       <head>
         <Meta />
         <Links />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.env = ${JSON.stringify(env)}`,
+          }}
+        />
       </head>
       <body className="h-full">
+        <ProgressBar percent={100} />
         <ThemeProvider>
           <DefaultLayout env={env}>
             <Outlet />
@@ -99,11 +106,7 @@ function App() {
         </ThemeProvider>
 
         <ScrollRestoration />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `window.env = ${JSON.stringify(env)}`,
-          }}
-        />
+
         <Scripts />
         <LiveReload />
       </body>

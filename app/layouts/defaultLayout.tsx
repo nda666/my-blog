@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
-import Breadcrumb from "~/components/BreadCrumb";
+import Breadcrumb from "~/components/breadCrumb";
 import Footer from "~/components/footer";
 import Navbar from "~/components/navbar";
-import OverlayLoading from "~/components/OverlayLoading";
+import OverlayLoading from "~/components/overlayLoading";
 import { useTheme } from "~/contexts/ThemeContext";
 
 export default function DefaultLayout({

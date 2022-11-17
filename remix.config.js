@@ -43,5 +43,8 @@ module.exports = {
     /^gemoji.*/,
     /^is-plain-obj.*/,
     /^escape-string-regexp.*/,
+    /three\/examples\/jsm\/loaders\/FontLoader/,
+    /three\/examples\/jsm\/geometries\/TextGeometry/,
+    /three\/examples\/jsm\/controls\/OrbitControls/,
   ],
 };

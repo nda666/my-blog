@@ -2,6 +2,7 @@ import { GoGitBranch, GoStar } from "react-icons/go";
 import type { PropsWithChildren } from "react";
 import type { GithubRepositories } from "~/types/GithubRepositories";
 import { Link } from "@remix-run/react";
+import RepositoryHeading from "./animation/repositoryHeading";
 
 interface RepoCardsInterface {
   repositories: GithubRepositories[];
@@ -38,14 +39,10 @@ export function RepoCard({
       to={`/repository/${repository.name}`}
       className="group card card-compact bg-base-100 shadow-xl"
     >
-      <figure className="flex flex-col h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 ">
-        <div
-          className={`transition ease-in-out  align-middle text-slate-100 capitalize text-5xl font-semibold w-full text-center group-hover:-translate-y-1 group-hover:scale-150 duration-300 ${
-            left ? "group-hover:-rotate-12" : "group-hover:rotate-12"
-          } `}
-        >
-          {repository.name[0].toUpperCase()}
-        </div>
+      <figure
+        className={`flex flex-col h-32 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500  align-middle text-slate-100 capitalize text-5xl font-semibold w-full text-center `}
+      >
+        <div className="animate-bounce">{repository.name[0].toUpperCase()}</div>
       </figure>
       <div className="card-body">
         <h2 className="card-title">{repository.name}</h2>

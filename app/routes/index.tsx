@@ -1,6 +1,9 @@
 import { ErrorBoundaryComponent, json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
+import { ClientOnly } from "remix-utils";
 import GetGithubRepos from "~/api/getGithubRepos";
+import RepositoryHeading from "~/components/animation/repositoryHeading";
+import Controls from "~/components/control";
 import Cta from "~/components/cta";
 import RenderErrorComponent from "~/components/errors/component";
 import RepoCards from "~/components/repoCards";
@@ -18,10 +21,10 @@ interface IndexData {
 
 export default function Index() {
   const { repositories, error } = useLoaderData<IndexData>();
-  console.info(repositories);
   return (
     <>
       <Cta />
+
       <div className="flex flex-col items-center">
         <RepoCards repositories={repositories} />
         <Link className="btn btn-link" to={"repository"}>

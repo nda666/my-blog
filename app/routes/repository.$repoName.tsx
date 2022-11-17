@@ -24,8 +24,6 @@ export async function loader({ params }: { params: RepositoryProps }) {
     readme.content = atob(readme.content);
   }
 
-  console.log(readme?.content);
-
   return json({
     repository: repo.data,
     readme: readme || undefined,

@@ -1,6 +1,7 @@
 import { Transition } from "@headlessui/react";
 import { useState } from "react";
 import avatar from "~/assets/images/avatar.svg";
+import RepositoryHeading from "./animation/repositoryHeading";
 export default function Cta() {
   const [isShowing, setIsShowing] = useState(false);
   const [isShowingCall, setIsShowingCall] = useState(false);
@@ -8,11 +9,14 @@ export default function Cta() {
     <div
       onMouseEnter={() => setIsShowing(true)}
       onMouseLeave={() => setIsShowing(false)}
-      className="bg-white dark:bg-gray-800 overflow-hidden relative flex md:flex-row flex-col"
+      className="bg-transparent overflow-hidden relative flex md:flex-row flex-col"
     >
       <div className="xs:w-full sm:w-full text-start  w-full md:w-1/2 lg:w-2/3 py-10 px-4 sm:px-6 lg:py-10 lg:px-8 z-0">
         <h2 className="text-3xl font-extrabold text-black dark:text-white sm:text-4xl">
-          <span className="block">Hi 👋, I'm Adha Bakhtiar</span>
+          <span>Hi 👋, I'm </span>
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+            Adha Bakhtiar
+          </span>
         </h2>
         <p className="text-lg text-violet-600 dark:text-violet-300">
           A passionate frontend & backend developer from Indonesia 🇮🇩

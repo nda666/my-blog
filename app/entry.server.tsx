@@ -19,6 +19,8 @@ export default function handleRequest(
 
   responseHeaders.set("Cache-Control", "max-age=300, s-maxage=3600");
   responseHeaders.set("Content-Type", "text/html");
+  responseHeaders.set("Transfer-Encoding", "chunked");
+  responseHeaders.set("Connection", "keep-alive");
 
   return new Response(`<!DOCTYPE html>${html}`, {
     status: responseStatusCode,

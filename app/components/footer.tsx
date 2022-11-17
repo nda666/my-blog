@@ -12,9 +12,8 @@ export interface FooterProps {
 }
 
 export default function Footer(props: FooterProps) {
-  console.log(props);
   return (
-    <footer className="footer footer-center mt-10 p-10 bg-primary text-primary-content">
+    <footer className="footer footer-center mt-10 p-10 bg-primary/[.4] text-primary-content">
       <div className="grid grid-flow-col gap-4">
         <Link to={""} className="link link-hover">
           Home
