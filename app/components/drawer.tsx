@@ -3,6 +3,7 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { createPortal } from "react-dom";
 import { MdClose } from "react-icons/md";
+import { Link } from "@remix-run/react";
 
 export default function Drawer({}) {
   const [open, setOpen] = useState(false);
@@ -81,16 +82,24 @@ const DrawerContainer = ({ open, setOpen }) => {
                     <div className="relative flex-1 px-4 overflow-y-auto">
                       <ul className="menu w-full p-0 rounded-box">
                         <li>
-                          <a>Home</a>
+                          <Link to="/" onClick={setOpen(false)}>
+                            Home
+                          </Link>
                         </li>
                         <li>
-                          <a>Repository</a>
+                          <Link to="/repository" onClick={setOpen(false)}>
+                            Repository
+                          </Link>
                         </li>
                         <li>
-                          <a>Blog</a>
+                          <Link to="/blog" onClick={setOpen(false)}>
+                            Blog
+                          </Link>
                         </li>
                         <li>
-                          <a>Profile</a>
+                          <Link to="/profile" onClick={setOpen(false)}>
+                            Profile
+                          </Link>
                         </li>
                       </ul>
                     </div>
