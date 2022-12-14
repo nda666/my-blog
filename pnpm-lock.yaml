@@ -45,6 +45,7 @@ specifiers:
   dotenv: ^16.0.3
   eslint: ^8.27.0
   framer-motion: ^6.5.1
+  is-buffer: ^2.0.5
   isbot: ^3.6.5
   loose-envify: ^1.4.0
   lru-cache: ^7.14.1
@@ -99,6 +100,7 @@ dependencies:
   cross-env: 7.0.3
   date-fns: 2.29.3
   framer-motion: 6.5.1_sfoxds7t5ydpegc3knd667wn6m
+  is-buffer: 2.0.5
   isbot: 3.6.5
   lru-cache: 7.14.1
   maath: 0.4.2_twhsijj2uegnsxqeilejtjb25u
