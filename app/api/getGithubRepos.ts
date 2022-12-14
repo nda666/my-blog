@@ -3,7 +3,7 @@ import type {
   GithubRepositories,
   GithubSearchRepositories,
 } from "~/types/GithubRepositories";
-import cache from "~/utils/cache";
+import cache from "~/utils/server/cache.server";
 
 interface GetGithubReposResponse {
   error: any;

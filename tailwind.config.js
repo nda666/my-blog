@@ -3,6 +3,16 @@ module.exports = {
   darkMode: "class",
   content: ["./app/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    fontFamily: {
+      mono: [
+        "Fira Code",
+        "Fira Mono",
+        "Menlo",
+        "Consolas",
+        "DejaVu Sans Mono",
+        "monospace",
+      ],
+    },
     extend: {
       typography: (theme) => ({
         DEFAULT: {
@@ -22,6 +32,8 @@ module.exports = {
               },
               img: {
                 display: "unset",
+                marginTop: "unset",
+                marginBottom: "unset",
               },
             },
           ],
@@ -44,7 +56,9 @@ module.exports = {
           error: "#F87272",
         },
       },
+      "dark",
     ],
+    darkTheme: "dark",
   },
   plugins: [require("daisyui"), require("@tailwindcss/typography")],
 };

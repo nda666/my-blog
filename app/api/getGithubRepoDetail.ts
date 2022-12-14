@@ -1,5 +1,5 @@
-import type { GithubRepositories } from "~/types/GithubRepositories";
-import cache from "~/utils/cache";
+import type { GithubRepositories } from "~/types/github";
+import cache from "~/utils/server/cache.server";
 
 interface GetGithubReposResponse {
   error: any;
@@ -9,11 +9,11 @@ interface GetGithubReposResponse {
 export default function getGithubRepoDetail(repoName: string) {
   return new Promise<GetGithubReposResponse>((resolve, reject) => {
     const cacheExist = cache.get<GetGithubReposResponse>(
-      `repositories.${repoName}`
+      `repository.${repoName}`
     );
     if (cacheExist) {
       resolve(cacheExist);
-      console.log("GetGithubReposResponse: from cache");
+      console.info("GetGithubReposResponse: from cache");
       return true;
     }
     fetch(
@@ -31,7 +31,7 @@ export default function getGithubRepoDetail(repoName: string) {
             ? undefined
             : { type: "api", ...(await response.json()) },
         };
-        response.ok && cache.set(`repositories.${repoName}`, result);
+        response.ok && cache.set(`repository.${repoName}`, result);
         resolve(result);
       })
       .catch((error) => {
@@ -41,7 +41,7 @@ export default function getGithubRepoDetail(repoName: string) {
         });
       })
       .finally(() => {
-        console.log("GetGithubReposResponse: from response");
+        console.info("GetGithubReposResponse: from response");
       });
   });
 }

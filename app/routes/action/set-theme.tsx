@@ -1,11 +1,5 @@
-import {
-  ActionFunction,
-  json,
-  LoaderFunction,
-  redirect,
-} from "@remix-run/node";
-import { Form } from "@remix-run/react";
-import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
+import type { ActionFunction, LoaderFunction } from "@remix-run/node";
+import { json, redirect } from "@remix-run/node";
 import { getThemeSession } from "~/utils/theme.server";
 
 export const action: ActionFunction = async ({ request }) => {

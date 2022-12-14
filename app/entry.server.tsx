@@ -5,7 +5,8 @@ import type { EntryContext } from "@remix-run/node"; // Depends on the runtime y
 import { SentryInit } from "./utils/sentry";
 import config from "./config";
 
-SentryInit(config.sentryDsn);
+console.log("process.env.NODE_ENV", process.env.NODE_ENV);
+process.env.NODE_ENV === "production" && SentryInit(config.sentryDsn);
 
 export default function handleRequest(
   request: Request,

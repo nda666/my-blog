@@ -1,12 +1,10 @@
 import { useFetcher } from "@remix-run/react";
-import { ReactNode, useContext, useRef } from "react";
-import { createContext, useEffect, useState } from "react";
+import { useContext, useRef, useEffect, useState } from "react";
+import { AppContext } from "./AppContext";
 
-export const ThemeContext = createContext({} as ReturnType<typeof useValue>);
-
-const useValue = (initialTheme?: "dark" | "light") => {
-  const [theme, setTheme] = useState<"dark" | "light">();
-  const [submitState, setSubmitState] = useState<
+export const ThemeContextValue = (initialTheme?: "dark" | "light") => {
+  const [theme, setTheme] = useState<"dark" | "light">(initialTheme || "light");
+  const [themeChangeState, setThemeChangeState] = useState<
     "idle" | "submitting" | "loading"
   >("idle");
   const persistTheme = useFetcher();
@@ -34,33 +32,18 @@ const useValue = (initialTheme?: "dark" | "light") => {
   }, [theme]);
 
   useEffect(() => {
-    setSubmitState(persistTheme.state);
+    setThemeChangeState(persistTheme.state);
   }, [persistTheme?.state]);
 
   return {
     theme,
     setTheme,
-    submitState,
+    themeChangeState,
   };
 };
 
-export default function ThemeProvider({
-  initialTheme,
-  children,
-}: {
-  initialTheme?: "dark" | "light";
-  children: ReactNode;
-}) {
-  return (
-    <ThemeContext.Provider value={useValue(initialTheme)}>
-      {children}
-    </ThemeContext.Provider>
-  );
-}
-
 export const useTheme = () => {
-  const { theme, setTheme, submitState } = useContext(ThemeContext);
-
+  const { theme, setTheme, themeChangeState } = useContext(AppContext);
   const isDark = () => {
     return theme === "dark";
   };
@@ -70,8 +53,9 @@ export const useTheme = () => {
   };
 
   return {
+    theme,
     isDark,
     toggleTheme,
-    submitState,
+    themeChangeState,
   };
 };

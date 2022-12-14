@@ -46,5 +46,6 @@ module.exports = {
     /three\/examples\/jsm\/loaders\/FontLoader/,
     /three\/examples\/jsm\/geometries\/TextGeometry/,
     /three\/examples\/jsm\/controls\/OrbitControls/,
+    // /^@toast-ui\/editor*/,
   ],
 };

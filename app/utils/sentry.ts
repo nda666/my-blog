@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/remix";
 import { useEffect } from "react";
 
 export const SentryInit = (dsn: string) => {
+  console.info("sentry init");
   Sentry.init({
     dsn,
     tracesSampleRate: 1,

@@ -1,5 +1,5 @@
-import { GithubReadme } from "~/types/GithubReadme";
-import cache from "~/utils/cache";
+import type { GithubReadme } from "~/types/github";
+import cache from "~/utils/server/cache.server";
 
 interface GetGithubReadmeResponse {
   error: any;
@@ -9,7 +9,7 @@ interface GetGithubReadmeResponse {
 export default function getGithubReadme(repoName: string) {
   return new Promise<GetGithubReadmeResponse>((resolve, reject) => {
     const cacheExist = cache.get<GetGithubReadmeResponse>(
-      `repositories.${repoName}.readme`
+      `repository.${repoName}.readme`
     );
     if (cacheExist) {
       resolve(cacheExist);
@@ -24,13 +24,17 @@ export default function getGithubReadme(repoName: string) {
       }
     )
       .then(async (response) => {
+        const json = await response.json();
+        if (json?.content) {
+          json.content = atob(json.content);
+        }
         const result = {
-          data: response.ok ? await response.json() : undefined,
+          data: response.ok ? json : undefined,
           error: response.ok
             ? undefined
             : { type: "api", ...(await response.json()) },
         };
-        response.ok && cache.set(`repositories.${repoName}`, result);
+        response.ok && cache.set(`repository.${repoName}.readme`, result);
         resolve(result);
       })
       .catch((error) => {
@@ -39,8 +43,6 @@ export default function getGithubReadme(repoName: string) {
           error,
         });
       })
-      .finally(() => {
-        console.log("GetGithubReposResponse: from response");
-      });
+      .finally(() => {});
   });
 }

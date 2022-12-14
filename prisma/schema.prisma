@@ -1,0 +1,67 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  posts     Post[]
+}
+
+model Post {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  title      String
+  slug       String     @unique
+  content    String
+  category   Category   @relation(fields: [categoryId], references: [id])
+  categoryId String     @db.ObjectId
+  status     PostStatus @default(Active)
+  userId     String     @db.ObjectId
+  user       User       @relation(fields: [userId], references: [id])
+  tagIds     String[]   @db.ObjectId
+  tags       Tag[]      @relation(fields: [tagIds], references: [id])
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model Category {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  slug      String       @unique
+  active    ActiveStatus @default(Active)
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+  posts     Post[]
+}
+
+model Tag {
+  id        String       @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  slug      String       @unique
+  active    ActiveStatus @default(Active)
+  posts     Post[]       @relation(fields: [postIds], references: [id])
+  postIds   String[]     @db.ObjectId
+  createdAt DateTime     @default(now())
+  updatedAt DateTime     @updatedAt
+}
+
+enum ActiveStatus {
+  Active
+  Inactive
+}
+
+enum PostStatus {
+  Active
+  Draft
+}
