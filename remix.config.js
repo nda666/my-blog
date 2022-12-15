@@ -13,6 +13,8 @@ module.exports = {
   server: process.env.NODE_ENV === "development" ? undefined : "./server.js",
 
   ignoredRouteFiles: ["**/.*"],
+
+  future: {}, // For remix 1.8.0 issue in vercel
   // appDirectory: "app",
   // assetsBuildDirectory: "public/build",
   // serverBuildPath: ".netlify/functions-internal/server.js",
