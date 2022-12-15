@@ -1,9 +1,9 @@
 // entry.server.tsx
-import { renderToString } from "react-dom/server";
-import { RemixServer } from "@remix-run/react";
 import type { EntryContext } from "@remix-run/node"; // Depends on the runtime you choose
-import { SentryInit } from "./utils/sentry";
+import { RemixServer } from "@remix-run/react";
+import { renderToString } from "react-dom/server";
 import config from "./config";
+import { SentryInit } from "./utils/sentry";
 
 console.log("process.env.NODE_ENV", process.env.NODE_ENV);
 process.env.NODE_ENV === "production" && SentryInit(config.sentryDsn);

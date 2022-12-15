@@ -1,21 +1,21 @@
 import type {
   LinksFunction,
   LoaderFunction,
-  MetaFunction
+  MetaFunction,
 } from "@remix-run/node";
-import {
-  json
-} from "@remix-run/node";
-import { Outlet, useCatch, useLoaderData } from "@remix-run/react";
+import { json } from "@remix-run/node";
+import { Outlet, useCatch, useLoaderData, useMatches } from "@remix-run/react";
 import { withSentry } from "@sentry/remix";
 import Document from "./components/Document";
 import NotFound from "./components/Errors/404";
 import { useTheme } from "./contexts/ThemeContext";
 
-import { inject } from '@vercel/analytics';
+import { inject } from "@vercel/analytics";
 import tailwindStylesheetUrl from "./styles/app.css";
 import { SentryInit } from "./utils/sentry";
 import { getThemeSession } from "./utils/theme.server";
+import { webVitals } from "./utils/webVitals";
+import { useEffect } from "react";
 
 export const links: LinksFunction = () => {
   return [
@@ -61,6 +61,7 @@ export const loader: LoaderFunction = async ({ request }) => {
         SOCIAL_FACEBOOK_URL: process.env.SOCIAL_FACEBOOK_URL,
         SOCIAL_INSTAGRAM_USERNAME: process.env.SOCIAL_INSTAGRAM_USERNAME,
         SOCIAL_TWITTER_USERNAME: process.env.SOCIAL_TWITTER_USERNAME,
+        VERCEL_ANALYTICS_ID: process.env.VERCEL_ANALYTICS_ID,
       },
     },
     {
@@ -91,10 +92,22 @@ export function CatchBoundary() {
 
 function App() {
   const { theme, isProduction, env } = useLoaderData();
-  if (isProduction){
-  SentryInit(env.SENTRY_DSN);
-   inject();
-}
+  const matches = useMatches();
+  useEffect(() => {
+    const index = matches.length - 1 || 0;
+    webVitals({
+      analyticsId: env.VERCEL_ANALYTICS_ID,
+      debug: true,
+      params: matches[index].params,
+      path: matches[index].pathname,
+    });
+  }, [matches]);
+
+  if (isProduction) {
+    SentryInit(env.SENTRY_DSN);
+    inject();
+  }
+
   return (
     <Document theme={theme || "dark"}>
       <Outlet />
