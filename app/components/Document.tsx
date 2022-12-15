@@ -27,6 +27,7 @@ export default function Document({ children, theme }: DocumentInterface) {
         <Links />
       </head>
       <body className="h-full">
+        
         <ProgressBar percent={100} />
         <AppProvider initialTheme={theme}>{children}</AppProvider>
         <ScrollRestoration />

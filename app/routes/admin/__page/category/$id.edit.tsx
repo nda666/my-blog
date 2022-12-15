@@ -6,8 +6,6 @@ import type {
 } from "@remix-run/node";
 import { json, redirect } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-import TUIEditorDarkCss from "@toast-ui/editor/dist/theme/toastui-editor-dark.css";
-import TUIEditorCss from "@toast-ui/editor/dist/toastui-editor.css";
 import { validationError } from "remix-validated-form";
 import CategoryForm from "~/components/Forms/CategoryForm";
 import { authenticatedRoute } from "~/utils/server/auth.server";
@@ -20,8 +18,6 @@ import categoryValidation from "~/utils/validations/category.validation";
 import type { AdminRootLoader } from "../../__page";
 export const links: LinksFunction = () => {
   return [
-    { rel: "stylesheet", href: TUIEditorCss },
-    { rel: "stylesheet", href: TUIEditorDarkCss },
   ];
 };
 export const handle = {

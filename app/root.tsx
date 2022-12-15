@@ -1,9 +1,10 @@
-import {
-  json,
+import type {
   LinksFunction,
-  LoaderArgs,
   LoaderFunction,
-  MetaFunction,
+  MetaFunction
+} from "@remix-run/node";
+import {
+  json
 } from "@remix-run/node";
 import { Outlet, useCatch, useLoaderData } from "@remix-run/react";
 import { withSentry } from "@sentry/remix";
@@ -11,6 +12,7 @@ import Document from "./components/Document";
 import NotFound from "./components/Errors/404";
 import { useTheme } from "./contexts/ThemeContext";
 
+import { inject } from '@vercel/analytics';
 import tailwindStylesheetUrl from "./styles/app.css";
 import { SentryInit } from "./utils/sentry";
 import { getThemeSession } from "./utils/theme.server";
@@ -50,7 +52,7 @@ export const loader: LoaderFunction = async ({ request }) => {
     {
       theme: theme.getTheme(),
       appName: process.env.APP_NAME,
-      enableSentry: process.env.NODE_ENV === "production",
+      isProduction: process.env.NODE_ENV === "production",
       env: {
         APP_NAME: process.env.APP_NAME,
         SENTRY_DSN: process.env.SENTRY_DSN,
@@ -88,8 +90,11 @@ export function CatchBoundary() {
 }
 
 function App() {
-  const { theme, enableSentry, env } = useLoaderData();
-  enableSentry && SentryInit(env.SENTRY_DSN);
+  const { theme, isProduction, env } = useLoaderData();
+  if (isProduction){
+  SentryInit(env.SENTRY_DSN);
+   inject();
+}
   return (
     <Document theme={theme || "dark"}>
       <Outlet />

@@ -5,7 +5,7 @@ const prisma = new PrismaClient();
 const email = "user@gmail.com";
 const password = "123456";
 
-async function seed() {
+async function createAdminUser() {
   await prisma.user.upsert({
     where: {
       email,
@@ -17,7 +17,8 @@ async function seed() {
     },
   });
 }
-seed()
+
+createAdminUser()
   .then(async () => {
     await prisma.$disconnect();
   })
