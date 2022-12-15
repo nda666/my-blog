@@ -97,11 +97,11 @@ function App() {
     const index = matches.length - 1 || 0;
     webVitals({
       analyticsId: env.VERCEL_ANALYTICS_ID,
-      debug: true,
+      debug: !isProduction,
       params: matches[index].params,
       path: matches[index].pathname,
     });
-  }, [matches]);
+  }, [env.VERCEL_ANALYTICS_ID, isProduction, matches]);
 
   if (isProduction) {
     SentryInit(env.SENTRY_DSN);
