@@ -1,6 +1,7 @@
 #vscode
 .vscode
 .history
+.nvmrc
 
 node_modules
 

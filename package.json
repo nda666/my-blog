@@ -2,9 +2,9 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "build": "pnpm run build:css && prisma generate && prisma db push && remix build",
+    "build": "npm run build:css && prisma generate && prisma db push && remix build",
     "build:css": "tailwindcss -m -i ./styles/app.css -o app/styles/app.css",
-    "dev": "concurrently \"cross-env NODE_ENV=development remix dev\" \"pnpm run dev:css\" ",
+    "dev": "concurrently \"cross-env NODE_ENV=development remix dev\" \"npm run dev:css\" ",
     "dev:css": "tailwindcss -w -i ./styles/app.css -o app/styles/app.css",
     "prisma": "prisma",
     "seed": "prisma db seed",
@@ -88,6 +88,5 @@
   },
   "prisma": {
     "seed": "node_modules/.bin/ts-node prisma/seed.ts"
-  },
-  "packageManager": "pnpm@7.9.5"
+  }
 }
