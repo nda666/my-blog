@@ -1,19 +1,14 @@
 import { useActionData } from "@remix-run/react";
 import classNames from "classnames/bind";
-import {
-  useControlField,
-  useField,
-  useFormContext,
-  ValidatedForm,
-} from "remix-validated-form";
-import postValidation from "~/utils/validations/post.validation";
-
+import { useFormContext, ValidatedForm } from "remix-validated-form";
+import { postValidation } from "~/utils/validations";
+import type { Category, Post, Tag } from "@prisma/client";
+import type { Editor } from "@toast-ui/react-editor";
 import { createRef, useEffect, useState } from "react";
 import { useTheme } from "~/contexts/ThemeContext";
-import type { Editor } from "@toast-ui/react-editor";
-import type { Category, Post, Tag } from "@prisma/client";
-import TagsSelect, { TagValueProps } from "./TagsSelect";
-import CategorySelect, { CategoryValueProps } from "./CategorySelect";
+import type { CategoryValueProps } from "./CategorySelect";
+import CategorySelect from "./CategorySelect";
+import TagsSelect from "./TagsSelect";
 
 const submitBtnClass = classNames.bind({
   base: `btn`,

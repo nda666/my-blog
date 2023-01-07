@@ -14,6 +14,7 @@ import {
   HiChevronLeft,
   HiChevronRight,
 } from "react-icons/hi";
+import { RiInformationLine } from "react-icons/ri";
 import TableLoading from "./TableLoading";
 
 export interface PaginatedTableProps {
@@ -24,6 +25,7 @@ export interface PaginatedTableProps {
   pageCount: number;
   loading: boolean;
   onPaginationChange?: OnChangeFn<PaginationState> | undefined;
+  onRefreshButtonClick?: React.MouseEventHandler<HTMLButtonElement> | undefined;
 }
 
 export default function PaginatedTable(props: PaginatedTableProps) {
@@ -72,7 +74,24 @@ export default function PaginatedTable(props: PaginatedTableProps) {
             {table.getRowModel().rows.length === 0 && (
               <tr>
                 <td colSpan={table.getAllColumns().length}>
-                  <div className="h-10"></div>
+                  <div className="h-auto">
+                    <div className="alert shadow-lg">
+                      <div>
+                        <RiInformationLine />
+                        <span>No data found</span>
+                      </div>
+                      {props.onRefreshButtonClick && (
+                        <div className="flex-none">
+                          <button
+                            onClick={props.onRefreshButtonClick}
+                            className="btn btn-sm btn-primary"
+                          >
+                            Refresh
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  </div>
                 </td>
               </tr>
             )}
@@ -165,17 +184,20 @@ export default function PaginatedTable(props: PaginatedTableProps) {
         <div className="flex items-center gap-2">
           <div>
             Go to page:
-            <input
-              type="number"
-              min={1}
-              max={props.pageCount}
+            <select
+              className="select mx-1"
               defaultValue={table.getState().pagination.pageIndex + 1}
               onChange={(e) => {
                 const page = e.target.value ? Number(e.target.value) - 1 : 0;
                 table.setPageIndex(page);
               }}
-              className="input w-20 mx-1"
-            />
+            >
+              {Array.from({ length: table.getPageCount() }).map((_, index) => (
+                <option key={index} value={index + 1}>
+                  {index + 1}
+                </option>
+              ))}
+            </select>
           </div>
           <select
             className="select mx-1"
@@ -184,7 +206,7 @@ export default function PaginatedTable(props: PaginatedTableProps) {
               table.setPageSize(Number(e.target.value));
             }}
           >
-            {[10, 20, 30, 40, 50].map((pageSize) => (
+            {[1, 10, 25, 50, 100].map((pageSize) => (
               <option key={pageSize} value={pageSize}>
                 Show {pageSize}
               </option>

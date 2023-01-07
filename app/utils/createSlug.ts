@@ -1,35 +1,37 @@
-import type { PrismaClient } from "@prisma/client";
-import { prisma } from "./server/prisma.server";
-type ModelType = keyof PrismaClient;
+import { Prisma } from "@prisma/client";
+import { prisma } from "../db.server";
 
 export default async function createSlug(
-  model: ModelType,
+  model: "post" | "tag" | "category",
   slug: string,
   except?: string
 ) {
+  if ("findFirst" in prisma[model] === false) {
+    throw Error("findFirst method not found!");
+  }
+
   let canUseSlug = false;
   let numericSlug = 2;
   let slugUsed = slug;
   while (!canUseSlug) {
-    const exceptFind = except
+    const filter = except
       ? {
-          NOT: {
-            id: except,
-          },
+          $and: [
+            {
+              _id: { $ne: { $oid: except } },
+              slug: { $eq: slugUsed },
+            },
+          ],
         }
-      : {
-          NOT: undefined,
-        };
-    const slugExist = await prisma[model].findFirst({
-      where: {
-        slug: slugUsed,
-        ...exceptFind,
-      },
+      : { slug: { $eq: slugUsed } };
+    const slugExist = await prisma[model].findRaw({
+      filter,
     });
-    if (slugExist) {
+    const isExist = Object.keys(slugExist).length > 0;
+    if (isExist) {
       slugUsed = `${slug}-${numericSlug.toString().toLowerCase()}`;
     }
-    canUseSlug = !slugExist;
+    canUseSlug = !isExist;
     numericSlug++;
   }
   return slugUsed;

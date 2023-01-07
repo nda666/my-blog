@@ -3,7 +3,14 @@ import { useContext, useRef, useEffect, useState } from "react";
 import { AppContext } from "./AppContext";
 
 export const ThemeContextValue = (initialTheme?: "dark" | "light") => {
+  /** first we want to know what them that user want */
+  const [userWantTheme, setUserWantTheme] = useState<"dark" | "light">(
+    initialTheme || "light"
+  );
+
+  /** this will saved to cookies after submiting */
   const [theme, setTheme] = useState<"dark" | "light">(initialTheme || "light");
+
   const [themeChangeState, setThemeChangeState] = useState<
     "idle" | "submitting" | "loading"
   >("idle");
@@ -21,23 +28,25 @@ export const ThemeContextValue = (initialTheme?: "dark" | "light") => {
       mountRun.current = true;
       return;
     }
-    if (!theme) {
+
+    if (!userWantTheme) {
       return;
     }
 
     persistThemeRef.current.submit(
-      { theme },
-      { action: "action/set-theme", method: "post" }
+      { userWantTheme },
+      { action: "theme", method: "post" }
     );
-  }, [theme]);
+  }, [userWantTheme]);
 
   useEffect(() => {
     setThemeChangeState(persistTheme.state);
+    persistTheme.state == "idle" && setTheme(userWantTheme);
   }, [persistTheme?.state]);
 
   return {
     theme,
-    setTheme,
+    setTheme: setUserWantTheme,
     themeChangeState,
   };
 };

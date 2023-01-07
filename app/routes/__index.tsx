@@ -1,4 +1,4 @@
-import type { LoaderFunction } from "@remix-run/node";
+import type { LoaderFunction, MetaFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Outlet, useLoaderData } from "@remix-run/react";
 import DefaultLayout from "~/layouts/DefaultLayout";
@@ -15,6 +15,16 @@ export const loader: LoaderFunction = async ({ request }) => {
       SOCIAL_TWITTER_USERNAME: process.env.SOCIAL_TWITTER_USERNAME,
     },
   });
+};
+
+export const meta: MetaFunction = ({ data, params }) => {
+  return {
+    charset: "utf-8",
+    viewport: "width=device-width,initial-scale=1",
+    title: `${data?.env?.APP_NAME}` || "",
+    description:
+      "Adha Bakhtiar A passionate frontend & backend developer from Indonesia 🇮🇩",
+  };
 };
 
 export default function Index() {

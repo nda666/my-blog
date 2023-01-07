@@ -6,7 +6,13 @@
     "api/index.js",
     "app/routes/api/posts.actions.like.ts"
   ],
-  "exclude": ["api/*.js", "api/**/*.js", "node_modules"],
+  "exclude": [
+    "api/*.js",
+    "api/**/*.js",
+    "node_modules",
+    "./cypress",
+    "./cypress.config.ts"
+  ],
   "compilerOptions": {
     "lib": ["DOM", "DOM.Iterable", "ES2019", "ESNext"],
     "isolatedModules": true,

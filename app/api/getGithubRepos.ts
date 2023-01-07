@@ -1,9 +1,9 @@
-import config from "~/config";
+import config from "~/config.server";
 import type {
   GithubRepositories,
   GithubSearchRepositories,
-} from "~/types/GithubRepositories";
-import cache from "~/utils/server/cache.server";
+} from "~/types/github";
+import cache from "~/cache.server";
 
 interface GetGithubReposResponse {
   error: any;

@@ -1,5 +1,5 @@
 import type { GithubRepositories } from "~/types/github";
-import cache from "~/utils/server/cache.server";
+import cache from "~/cache.server";
 
 interface GetGithubReposResponse {
   error: any;

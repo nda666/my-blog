@@ -1,14 +1,6 @@
-import { Link, useNavigate } from "@remix-run/react";
-import { Fragment } from "react";
-import {
-  RiArrowLeftFill,
-  RiArrowRightFill,
-  RiArrowRightSFill,
-  RiMenu4Line,
-} from "react-icons/ri";
+import { Link } from "@remix-run/react";
 import { FaEllipsisH } from "react-icons/fa";
-
-import ReactPaginate from "react-paginate";
+import { RiArrowLeftFill, RiArrowRightFill } from "react-icons/ri";
 
 export interface PaginateInterface {
   totalData: number;
@@ -24,7 +16,7 @@ const RIGHT_PAGE = "RIGHT";
  * Helper method for creating a range of numbers
  * range(1, 5) => [1, 2, 3, 4, 5]
  */
-const range = (from, to, step = 1) => {
+const range = (from: number, to: number, step = 1) => {
   let i = from;
   const range = [];
 
@@ -37,7 +29,6 @@ const range = (from, to, step = 1) => {
 };
 
 export default function Paginate(props: PaginateInterface) {
-  const navigate = useNavigate();
   const totalPages = Math.ceil(props.totalData / props.dataPerPage);
 
   const fetchPageNumbers = () => {
@@ -54,7 +45,7 @@ export default function Paginate(props: PaginateInterface) {
     if (totalPages > totalBlocks) {
       const startPage = Math.max(2, currentPage - pageNeighbours);
       const endPage = Math.min(totalPages - 1, currentPage + pageNeighbours);
-      let pages = range(startPage, endPage);
+      let pages: (string | number)[] = range(startPage, endPage);
 
       /**
        * hasLeftSpill: has hidden pages to the left

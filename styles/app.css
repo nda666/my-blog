@@ -1,7 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@layer base {
+  html {
+    font-size: 14pt;
+  }
+}
 @layer utilities {
   .scrollbar::-webkit-scrollbar {
     width: 10px;

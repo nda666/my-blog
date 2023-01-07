@@ -17,14 +17,14 @@ export function DropdownItem(props: ExtractProps<typeof Menu.Item>) {
   return (
     <Menu.Item {...props}>
       {({ active }) => (
-        <button
+        <div
           className={`${
             active
               ? "bg-primary  text-white"
               : "text-primary dark:text-primary-content"
-          } flex rounded-md w-full text-left py-1`}
+          } flex rounded-md w-full text-left`}
           {...props}
-        ></button>
+        ></div>
       )}
     </Menu.Item>
   );

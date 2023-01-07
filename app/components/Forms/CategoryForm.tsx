@@ -1,7 +1,7 @@
 import { useActionData } from "@remix-run/react";
 import classNames from "classnames/bind";
 import { useFormContext, ValidatedForm } from "remix-validated-form";
-import categoryValidation from "~/utils/validations/category.validation";
+import { categoryValidation } from "~/utils/validations";
 
 import type { Category } from "@prisma/client";
 

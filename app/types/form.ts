@@ -8,8 +8,6 @@ export type LoginForm = {
 export type RegisterForm = {
   email: string;
   password: string;
-  firstName: string;
-  lastName: string;
 };
 
 export type TagPostType = {
@@ -43,4 +41,11 @@ export type CategoryFormType = {
 
 export type PostFormUserType = {
   id: string;
+};
+
+export type AccountFormType = {
+  id: string;
+  email: string;
+  password?: string;
+  passwordConfirm?: string;
 };

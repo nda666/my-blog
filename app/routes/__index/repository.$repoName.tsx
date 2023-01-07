@@ -1,4 +1,4 @@
-import type { LoaderFunction, MetaFunction } from "@remix-run/node";
+import { LoaderFunction, MetaFunction, Response } from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
 import getGithubReadme from "~/api/getGithubReadme";
@@ -6,12 +6,16 @@ import getGithubRepoDetail from "~/api/getGithubRepoDetail";
 import ReactMarkdown from "react-markdown";
 import gfm from "remark-gfm";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import oneDark from "react-syntax-highlighter/dist/cjs/styles/prism";
+import {
+  oneDark,
+  oneLight,
+} from "react-syntax-highlighter/dist/cjs/styles/prism";
 import rehypeRaw from "rehype-raw";
 import remarkGemoji from "remark-gemoji";
 import { formatDistance, parseISO } from "date-fns";
 import type { GithubReadme, GithubRepositories } from "~/types/github";
 import { RepoOwner, RepoStats } from "~/components/Repository";
+import { useTheme } from "~/contexts/ThemeContext";
 
 interface RepositoryLoader {
   repository: GithubRepositories;
@@ -24,9 +28,16 @@ export const loader: LoaderFunction = async ({ params }) => {
   if (!repoName) {
     throw new Response("Not Found", {
       status: 404,
+      statusText: "Not Found",
     });
   }
   const repo = await getGithubRepoDetail(repoName);
+  if (!repo.data) {
+    throw new Response("Not Found", {
+      status: 404,
+      statusText: "Not Found",
+    });
+  }
   const readmeResponse = await getGithubReadme(repoName);
 
   // remove reactivity of repo.data
@@ -50,6 +61,8 @@ export const loader: LoaderFunction = async ({ params }) => {
 
 export default function Repository() {
   const loader = useLoaderData<RepositoryLoader>();
+  const { theme } = useTheme();
+
   return (
     <div className="w-full px-4 grid md:grid-cols-3 grid-cols-1 gap-4">
       <div className="md:col-span-2">
@@ -61,7 +74,7 @@ export default function Repository() {
                 return !inline && match ? (
                   <SyntaxHighlighter
                     showLineNumbers
-                    style={oneDark} // try passing different color schemes, drak, dracula etc.
+                    style={theme == "dark" ? oneDark : oneLight} // try passing different color schemes, drak, dracula etc.
                     language={match[1]}
                     PreTag="div"
                     {...props}
@@ -88,9 +101,11 @@ export default function Repository() {
   );
 }
 
-export const meta: MetaFunction<typeof loader> = ({ data }) => ({
-  charset: "utf-8",
-  title: `${data.repository.name}|Repository | ${data?.appName}` || "",
-  viewport: "width=device-width,initial-scale=1",
-  description: `${data?.loader?.description}`,
-});
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
+  return data?.repository
+    ? {
+        title: `${data.repository.name} | Repository | ${data?.appName}` || "",
+        description: `${data?.loader?.description}`,
+      }
+    : {};
+};

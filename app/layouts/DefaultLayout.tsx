@@ -15,8 +15,10 @@ export default function DefaultLayout({
   const { themeChangeState } = useTheme();
   return (
     <>
-      {themeChangeState == "loading" && (
-        <OverlayLoading message="Loading theme for you" />
+      {themeChangeState == "submitting" && (
+        <OverlayLoading message="Loading theme for you">
+          <span className="text-4xl animate-bounce">🎨</span>
+        </OverlayLoading>
       )}
       <div className="bg-white dark:bg-gray-800 relative">
         <Navbar title={env.APP_NAME} />

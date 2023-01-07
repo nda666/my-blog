@@ -1,17 +1,22 @@
-import type { ErrorBoundaryComponent, LoaderFunction } from "@remix-run/node";
+import type {
+  ErrorBoundaryComponent,
+  LoaderFunction,
+  MetaFunction,
+} from "@remix-run/node";
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import GetGithubRepos from "~/api/getGithubRepos";
-import Cta from "~/components/cta";
 import RenderErrorComponent from "~/components/Errors/RenderErrorComponent";
 import RepoCards from "~/components/Repository/RepoCards";
 import type { GithubRepositories } from "~/types/github";
+import Hero from "~/components/Hero";
 
 export const loader: LoaderFunction = async () => {
   const { data, error } = await GetGithubRepos(1, 3);
 
   return json({ repositories: data?.items, error: error });
 };
+
 interface IndexData {
   repositories: GithubRepositories[];
   error: any;
@@ -21,7 +26,7 @@ export default function Index() {
   const { repositories, error } = useLoaderData<IndexData>();
   return (
     <>
-      <Cta />
+      <Hero />
       <div className="flex flex-col items-center ">
         <RepoCards repositories={repositories} />
       </div>

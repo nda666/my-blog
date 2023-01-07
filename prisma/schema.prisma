@@ -19,27 +19,121 @@ model User {
   posts     Post[]
 }
 
+model Resume {
+  id              String       @id @default(auto()) @map("_id") @db.ObjectId
+  firstName       String
+  lastName        String
+  sortDescription String
+  birthday        String
+  educations      Education[]
+  experiences     Experience[]
+  skills          Skill[]
+  languages       Language[]
+  about           About        @relation(fields: [aboutId], references: [id])
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  aboutId         String       @db.ObjectId
+}
+
+model Education {
+  id              String         @id @default(auto()) @map("_id") @db.ObjectId
+  institute       String
+  graduationMonth Int
+  graduationYear  Int
+  qualification   String
+  location        String
+  major           String?
+  studyName       String
+  grade           EducationGrade
+  cgpa            Float
+  cgpaBase        Float
+  info            String?
+  Resume          Resume?        @relation(fields: [resumeId], references: [id])
+  resumeId        String?        @db.ObjectId
+}
+
+model Experience {
+  id              String  @id @default(auto()) @map("_id") @db.ObjectId
+  positionTitle   String
+  companyName     String
+  joinDateMonth   Int
+  joinDateYear    Int
+  leftDateMonth   Int?
+  leftDateYear    Int?
+  present         Boolean
+  role            String
+  country         String
+  positionLevel   String
+  workDescription String
+  Resume          Resume? @relation(fields: [resumeId], references: [id])
+  resumeId        String? @db.ObjectId
+}
+
+model Skill {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  description String
+  level       SkillLevel
+  Resume      Resume?    @relation(fields: [resumeId], references: [id])
+  resumeId    String?    @db.ObjectId
+}
+
+model Language {
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  languageCode String
+  spoken       Int
+  writen       Int
+  primary      Boolean
+  Resume       Resume? @relation(fields: [resumeId], references: [id])
+  resumeId     String? @db.ObjectId
+}
+
+model Setting {
+  id        String      @id @default(auto()) @map("_id") @db.ObjectId
+  key       String      @unique
+  value     String
+  type      SettingType
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model About {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  firstName   String
+  lastName    String
+  birthday    DateTime
+  gender      GENDER
+  email       String
+  phoneCode   String
+  phoneNumber String
+  address     String
+  city        String
+  country     String
+  state       String
+  nationality String
+  Resume      Resume[]
+}
+
 model Post {
-  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  id         String       @id @default(auto()) @map("_id") @db.ObjectId
   title      String
-  slug       String     @unique
+  slug       String       @unique
   content    String
-  category   Category   @relation(fields: [categoryId], references: [id])
-  categoryId String     @db.ObjectId
-  status     PostStatus @default(Active)
-  userId     String     @db.ObjectId
-  user       User       @relation(fields: [userId], references: [id])
-  tagIds     String[]   @db.ObjectId
-  tags       Tag[]      @relation(fields: [tagIds], references: [id])
-  createdAt  DateTime   @default(now())
-  updatedAt  DateTime   @updatedAt
+  category   Category?    @relation(fields: [categoryId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  categoryId String?      @db.ObjectId
+  status     ActiveStatus @default(ACTIVE)
+  userId     String       @db.ObjectId
+  user       User         @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  tagIds     String[]     @db.ObjectId
+  tags       Tag[]        @relation(fields: [tagIds], references: [id])
+  createdAt  DateTime     @default(now())
+  updatedAt  DateTime     @updatedAt
 }
 
 model Category {
   id        String       @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   slug      String       @unique
-  active    ActiveStatus @default(Active)
+  active    ActiveStatus @default(ACTIVE)
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
   posts     Post[]
@@ -49,19 +143,36 @@ model Tag {
   id        String       @id @default(auto()) @map("_id") @db.ObjectId
   name      String
   slug      String       @unique
-  active    ActiveStatus @default(Active)
+  active    ActiveStatus @default(ACTIVE)
   posts     Post[]       @relation(fields: [postIds], references: [id])
   postIds   String[]     @db.ObjectId
   createdAt DateTime     @default(now())
   updatedAt DateTime     @updatedAt
 }
 
-enum ActiveStatus {
-  Active
-  Inactive
+enum EducationGrade {
+  CGPA       @map("CGPA")
+  ONGOING    @map("on going")
+  INCOMPLETE @map("advanced")
 }
 
-enum PostStatus {
-  Active
-  Draft
+enum SkillLevel {
+  ADVANCED     @map("advanced")
+  BEGINER      @map("beginer")
+  INTERMEDIATE @map("intermediate")
+}
+
+enum SettingType {
+  SHORTTEXT @map("short text")
+  LONGTEXT  @map("short text")
+}
+
+enum ActiveStatus {
+  INACTIVE @map("inactive")
+  ACTIVE   @map("active")
+}
+
+enum GENDER {
+  MALE   @map("male")
+  FEMALE @map("female")
 }

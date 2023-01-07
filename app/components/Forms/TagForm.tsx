@@ -1,7 +1,7 @@
 import { useActionData } from "@remix-run/react";
 import classNames from "classnames/bind";
 import { useFormContext, ValidatedForm } from "remix-validated-form";
-import tagValidation from "~/utils/validations/tag.validation";
+import { tagValidation } from "~/utils/validations";
 
 import type { Tag } from "@prisma/client";
 

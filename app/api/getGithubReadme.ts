@@ -1,5 +1,5 @@
 import type { GithubReadme } from "~/types/github";
-import cache from "~/utils/server/cache.server";
+import cache from "~/cache.server";
 
 interface GetGithubReadmeResponse {
   error: any;

@@ -1,21 +1,24 @@
 import * as bcrypt from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime";
+
+const email = "user@gmail.com"; // Change with your email
+const password = "123456"; // Change the password
 
 const prisma = new PrismaClient();
-const email = "user@gmail.com";
-const password = "123456";
 
 async function createAdminUser() {
-  await prisma.user.upsert({
-    where: {
-      email,
-    },
-    update: {},
-    create: {
-      email,
-      password: bcrypt.hashSync(password),
-    },
-  });
+  await prisma.user
+    .create({
+      data: { email, password: bcrypt.hashSync(password) },
+    })
+    .catch((error) => {
+      if (error instanceof PrismaClientKnownRequestError) {
+        if (error.code === "P2002") {
+          console.error(`A user with email "${email}" already created`);
+        }
+      }
+    });
 }
 
 createAdminUser()

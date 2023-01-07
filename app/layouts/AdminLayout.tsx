@@ -1,6 +1,6 @@
 import { useMatches } from "@remix-run/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import type { ReactNode } from "react";
+import { ReactNode, useEffect, useState } from "react";
 import OverlayLoading from "~/components/OverlayLoading";
 import { useTheme } from "~/contexts/ThemeContext";
 import BottomNavigation from "./AdminLayout/BottomNavigation";
@@ -19,12 +19,14 @@ const queryClient = new QueryClient({
 export default function AdminLayout({
   env,
   children,
+  title,
 }: {
   env?: any;
   children: ReactNode;
+  title?: string;
 }) {
   const { themeChangeState } = useTheme();
-  const matches = useMatches();
+
   return (
     <QueryClientProvider client={queryClient}>
       {themeChangeState != "idle" && (
@@ -34,7 +36,7 @@ export default function AdminLayout({
         <div className="w-full flex">
           <Sidebar />
           <div className="w-full">
-            <Navbar title={matches.pop()?.handle?.title()!} />
+            <Navbar title={title} />
             <Breadcrumb />
             <div className="p-2 md:px-4">{children}</div>
           </div>

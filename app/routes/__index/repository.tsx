@@ -32,7 +32,7 @@ export default function Index() {
   const { repositories, error, currentPage } = useLoaderData<RepoPageData>();
   return (
     <>
-      <RepoCards repositories={repositories.items || []} />
+      <RepoCards repositories={repositories?.items || []} />
       <Paginate
         dataPerPage={9}
         currentPage={currentPage}

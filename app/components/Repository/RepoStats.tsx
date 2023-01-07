@@ -4,6 +4,7 @@ export interface RepoStatsprops {
   repository: GithubRepositories;
 }
 export default function RepoStats({ repository }: RepoStatsprops) {
+  console.log(repository.license);
   return (
     <div className="stats stats-vertical bg-primary-focus text-primary-content shadow w-full">
       <div className="stat">
@@ -40,7 +41,7 @@ export default function RepoStats({ repository }: RepoStatsprops) {
 
       <div className="stat">
         <div className="stat-title">License</div>
-        <div className="stat-desc">{repository.license.name}</div>
+        <div className="stat-desc">{repository.license?.name || "Unknown"}</div>
       </div>
     </div>
   );

@@ -10,7 +10,7 @@ import { useSidebar } from "~/contexts/SidebarContext";
 import { useTheme } from "~/contexts/ThemeContext";
 
 export interface NavbarProps {
-  title: string;
+  title?: string;
 }
 
 export default function Navbar({ title }: NavbarProps) {
@@ -28,7 +28,7 @@ export default function Navbar({ title }: NavbarProps) {
         </button>
       </div>
       <div className="navbar-center">
-        <a className="btn btn-ghost normal-case text-xl">{title}</a>
+        <a className="btn btn-ghost normal-case text-xl">{title || ""}</a>
       </div>
       <div className="navbar-end">
         <button className="btn btn-ghost btn-circle">

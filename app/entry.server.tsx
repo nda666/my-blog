@@ -1,8 +1,7 @@
-// entry.server.tsx
 import type { EntryContext } from "@remix-run/node"; // Depends on the runtime you choose
 import { RemixServer } from "@remix-run/react";
 import { renderToString } from "react-dom/server";
-import config from "./config";
+import config from "./config.server";
 import { SentryInit } from "./utils/sentry";
 
 console.log("process.env.NODE_ENV", process.env.NODE_ENV);

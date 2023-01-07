@@ -1,40 +1,54 @@
 import type {
+  DataFunctionArgs,
   LinksFunction,
-  LoaderFunction,
   MetaFunction,
 } from "@remix-run/node";
+import { Headers, LoaderFunction } from "@remix-run/node";
 import { json } from "@remix-run/node";
-import { Outlet, useCatch, useLoaderData, useMatches } from "@remix-run/react";
+import {
+  Outlet,
+  useCatch,
+  useLoaderData,
+  useLocation,
+  useMatches,
+} from "@remix-run/react";
 import { withSentry } from "@sentry/remix";
 import Document from "./components/Document";
 import NotFound from "./components/Errors/404";
 import { useTheme } from "./contexts/ThemeContext";
-
+import {
+  AuthenticityTokenProvider,
+  createAuthenticityToken,
+} from "remix-utils";
 import { inject } from "@vercel/analytics";
 import tailwindStylesheetUrl from "./styles/app.css";
 import { SentryInit } from "./utils/sentry";
-import { getThemeSession } from "./utils/theme.server";
+import { getThemeSession } from "~/theme.server";
 import { webVitals } from "./utils/webVitals";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { getSession } from "./session.server";
+import type { FlashMessageType } from "./types/session";
 
 export const links: LinksFunction = () => {
   return [
-    { rel: "stylesheet", href: tailwindStylesheetUrl },
-    { rel: "preconnect", href: "https://fonts.googleapis.com" },
     {
       rel: "preconnect",
       href: "https://fonts.gstatic.com",
       crossOrigin: "anonymous",
     },
+    { rel: "preconnect", href: "https://fonts.googleapis.com" },
     {
       rel: "stylesheet",
-      href: "https://fonts.googleapis.com/css2?family=Lobster&display=swap",
+      href: "https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap",
     },
+    { rel: "stylesheet", href: tailwindStylesheetUrl },
   ];
 };
 
-export const loader: LoaderFunction = async ({ request }) => {
+export const loader = async ({ request }: DataFunctionArgs) => {
   const theme = await getThemeSession(request);
+  const session = await getSession(request);
+  const token = createAuthenticityToken(session);
   const userTheme = await getThemeSession(request);
 
   if (!userTheme.getTheme()) {
@@ -48,8 +62,14 @@ export const loader: LoaderFunction = async ({ request }) => {
     );
   }
 
+  const headers = new Headers();
+  const message = session.get("message") as FlashMessageType | undefined | null;
+  headers.append("Set-Cookie", await userTheme.commit());
+  headers.append("Set-Cookie", await session.commit());
   return json(
     {
+      csrf: token,
+      message: message,
       theme: theme.getTheme(),
       appName: process.env.APP_NAME,
       isProduction: process.env.NODE_ENV === "production",
@@ -65,42 +85,50 @@ export const loader: LoaderFunction = async ({ request }) => {
       },
     },
     {
-      headers: {
-        "Set-Cookie": await userTheme.commit(),
-      },
+      headers,
     }
   );
 };
 
-export const meta: MetaFunction = ({ data, params }) => ({
-  charset: "utf-8",
-  title: data?.env?.APP_NAME || "",
-  viewport: "width=device-width,initial-scale=1",
-  description:
-    "Adha Bakhtiar A passionate frontend & backend developer from Indonesia 🇮🇩",
-});
+export type RootLoader = typeof loader;
+
+export const meta: MetaFunction = ({ data, params }) => {
+  return {
+    charset: "utf-8",
+    viewport: "width=device-width,initial-scale=1",
+  };
+};
 
 export function CatchBoundary() {
-  const { theme } = useTheme();
   const caught = useCatch();
+  const { theme } = useTheme();
+  const [currentTheme, setCurrentTheme] = useState(theme);
+  useEffect(() => {
+    setCurrentTheme(theme);
+  }, [theme]);
   return (
-    <Document theme={theme || "dark"}>
+    <Document theme={currentTheme || "dark"} caught={caught}>
       <NotFound status={caught.status} statusText={caught.statusText} />
     </Document>
   );
 }
 
 function App() {
-  const { theme, isProduction, env } = useLoaderData();
+  const { theme, isProduction, env, csrf } = useLoaderData<RootLoader>();
+  const [currentTheme, setCurrentTheme] = useState(theme);
   const matches = useMatches();
   useEffect(() => {
+    setCurrentTheme(theme);
+  }, [theme]);
+  useEffect(() => {
     const index = matches.length - 1 || 0;
-    webVitals({
-      analyticsId: env.VERCEL_ANALYTICS_ID,
-      debug: !isProduction,
-      params: matches[index].params,
-      path: matches[index].pathname,
-    });
+    isProduction &&
+      webVitals({
+        analyticsId: env.VERCEL_ANALYTICS_ID!,
+        debug: !isProduction,
+        params: matches[index].params,
+        path: matches[index].pathname,
+      });
   }, [env.VERCEL_ANALYTICS_ID, isProduction, matches]);
 
   if (isProduction) {
@@ -109,9 +137,11 @@ function App() {
   }
 
   return (
-    <Document theme={theme || "dark"}>
-      <Outlet />
-    </Document>
+    <AuthenticityTokenProvider token={csrf}>
+      <Document theme={currentTheme || "dark"}>
+        <Outlet />
+      </Document>
+    </AuthenticityTokenProvider>
   );
 }
 export default withSentry(App);

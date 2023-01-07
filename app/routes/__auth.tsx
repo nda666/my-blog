@@ -1,27 +1,24 @@
-import type { LoaderFunction } from "@remix-run/node";
-import { json } from "@remix-run/node";
-import { Outlet, useLoaderData } from "@remix-run/react";
+import { MetaFunction } from "@remix-run/node";
+import { Outlet, useMatches } from "@remix-run/react";
 import AuthLayout from "~/layouts/AuthLayout";
 
-export const loader: LoaderFunction = async ({ request }) => {
-  return json({
-    env: {
-      APP_NAME: process.env.APP_NAME,
-      SENTRY_DSN: process.env.SENTRY_DSN,
-      GITHUB_USERNAME: process.env.GITHUB_USERNAME,
-      SOCIAL_EMAIL: process.env.SOCIAL_EMAIL,
-      SOCIAL_FACEBOOK_URL: process.env.SOCIAL_FACEBOOK_URL,
-      SOCIAL_INSTAGRAM_USERNAME: process.env.SOCIAL_INSTAGRAM_USERNAME,
-      SOCIAL_TWITTER_USERNAME: process.env.SOCIAL_TWITTER_USERNAME,
-    },
-  });
-};
-
 export default function Index() {
-  const { env } = useLoaderData();
+  const root = useMatches()[0];
   return (
-    <AuthLayout env={env}>
+    <AuthLayout env={root.data.env}>
       <Outlet></Outlet>
     </AuthLayout>
   );
 }
+
+export const meta: MetaFunction = ({ parentsData }) => {
+  console.log("parentsData", parentsData);
+  return {
+    charset: "utf-8",
+    viewport: "width=device-width,initial-scale=1",
+    // title: `${data?.env?.APP_NAME}` || "",
+    description:
+      // "Adha Bakhtiar A passionate frontend & backend developer from Indonesia 🇮🇩",
+      JSON.stringify(parentsData),
+  };
+};

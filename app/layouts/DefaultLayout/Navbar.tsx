@@ -1,7 +1,7 @@
 import { useTheme } from "~/contexts/ThemeContext";
 import { MdOutlineDarkMode, MdOutlineLightMode } from "react-icons/md";
 import Drawer from "./Drawer";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 import { Link } from "@remix-run/react";
 
 interface NavbarProps {
@@ -34,11 +34,12 @@ export default function Navbar({
         </div>
       </div>
       <div className="navbar-center">
-        <Link
-          to={"/"}
-          className="btn btn-ghost normal-case text-2xl app-name-header "
-        >
-          {title || "APP_TITLE"}
+        <Link to={"/"} className="">
+          <img
+            className="h-10 px-2 transition-transform duration-1000 hover:-rotate-[360deg] ease-in-out"
+            src="/images/logo.png"
+            alt={title || "APP_TITLE"}
+          />
         </Link>
       </div>
       <div className="navbar-end justify-end md:justify-between">
