@@ -94,6 +94,7 @@ export type RootLoader = typeof loader;
 
 export const meta: MetaFunction = ({ data, params }) => {
   return {
+    "google-site-verification": "pFGje8l5p-QEdP53PomhKujGUGinfTxQ2g15lnQ6mJw",
     charset: "utf-8",
     viewport: "width=device-width,initial-scale=1",
   };
